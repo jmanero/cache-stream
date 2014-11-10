@@ -2,18 +2,21 @@
   "name": "cache-stream",
   "version": "0.0.1",
   "description": "Streaming cache object controller",
-  "main": "index.js",
-  "scripts": {
-    "test": "/bin/false"
+  "author": "John Manero <john.manero@gmail.com>",
+  "dependencies": {
+    "debug": "2.x"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:jmanero/cache-stream.git"
   },
-  "author": "John Manero <john.manero@gmail.com>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jmanero/cache-stream/issues"
   },
-  "homepage": "https://github.com/jmanero/cache-stream"
+  "homepage": "https://github.com/jmanero/cache-stream",
+  "scripts": {
+    "test": "/bin/false"
+  },
+  "main": "index.js"
 }
