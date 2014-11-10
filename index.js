@@ -10,10 +10,10 @@ var Cache = module.exports = function() {
   var cache = this;
 
   this.complete = false;
-  this.data = Buffer(0);
   this.consumers = {};
+  this._data = Buffer(0);
   this._md5 = Crypto.createHash('md5');
-  this._sha = Crypto.createHash('sha1');
+  this._sha1 = Crypto.createHash('sha1');
   this._sha256 = Crypto.createHash('sha256');
 
   this.on('finish', function() {
@@ -25,9 +25,9 @@ var Cache = module.exports = function() {
     delete cache._md5;
     DEBUG('MD5: ' + cache.md5);
 
-    cache.sha = cache._sha.digest('base64');
-    delete cache._sha;
-    DEBUG('SHA: ' + cache.sha);
+    cache.sha1 = cache._sha1.digest('base64');
+    delete cache._sha1;
+    DEBUG('SHA1: ' + cache.sha1);
 
     cache.sha256 = cache._sha256.digest('base64');
     delete cache._sha256;
@@ -38,7 +38,7 @@ Util.inherits(Cache, Stream.Writable);
 
 Object.defineProperty(Cache.prototype, 'length', {
   get: function() {
-    return this.data.length;
+    return this._data.length;
   }
 });
 
@@ -47,12 +47,12 @@ Cache.prototype._write = function(chunk, encoding, callback) {
   setImmediate(callback);
 
   // Store chunk and push to consumers
-  this.data = Buffer.concat([this.data, chunk]);
+  this._data = Buffer.concat([this._data, chunk]);
   for (var id in consumers) consumers[id].chunk(chunk);
 
   // Update hashes
   this._md5.update(chunk);
-  this._sha.update(chunk);
+  this._sha1.update(chunk);
   this._sha256.update(chunk);
 };
 
@@ -60,7 +60,7 @@ Cache.prototype._write = function(chunk, encoding, callback) {
  * Return a chunk of the cached object
  */
 Cache.prototype.chunk = function(position, length) {
-  return this.data.slice(position, position + length);
+  return this._data.slice(position, position + length);
 };
 
 /**
@@ -77,6 +77,7 @@ Cache.prototype.pipe = function(consumer) {
   });
 
   reader.pipe(consumer);
+  return reader;
 };
 
 /**
