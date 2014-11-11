@@ -1,5 +1,5 @@
 {
-  "name": "cache-stream",
+  "name": "cash-stream",
   "description": "Streaming cache object controller",
   "author": "John Manero <john.manero@gmail.com>",
   "dependencies": {

@@ -16,7 +16,6 @@ class Release < Thor
     'module, and publish to NPM'
   def release(type = nil, prerelease = nil)
     invoke :version, [type, prerelease], options
-    invoke :package, [], options
     invoke :publish, [], options
   end
 
@@ -28,7 +27,7 @@ class Release < Thor
   end
 
   desc 'package', 'Update package.json with current module version'
-  def package(*args)
+  def package(*_)
     invoke 'version:current', [], options
 
     ## Read package.json template, add version, render package.json
@@ -40,7 +39,8 @@ class Release < Thor
   end
 
   desc 'publish', 'Publish module using NPM'
-  def publish(*args)
+  def publish(*_)
+    invoke :package, [], options
     run 'npm publish'
   end
 end
